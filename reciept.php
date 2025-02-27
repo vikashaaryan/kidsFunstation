@@ -1,3 +1,5 @@
+<?php include_once "config/connect.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,45 +30,60 @@
                     <span class="text-base text-gray-600 font-semibold">kidzfunstation@gmail.com</span>
                 </div>
             </div>
-            <div class="flex flex-col gap-2 p-4">
-                <p class="text-black font-semibold text-lg">Kid's Name: Roni Kumar</p>
-                <span class="text-black font-semibold text-lg">Assigned Hours: 1 Hour</span>
-                <p class="text-black font-semibold text-lg">Check-In Time: 04:07 PM - 25/02/2025</p>
-                <p class="text-black font-semibold text-lg">Receipt Details:</p>
-            </div>
-            <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
-                <p>Base Amount (Excl. GST):</p>
-                <span>Rs. 265</span>
-            </div>
-            <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
-                <p>CGST (9%):</p>
-                <span>Rs. 47.70</span>
-            </div>
-            <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
-                <p>SGST (9%):</p>
-                <span>Rs. 47.70</span>
-            </div>
-            <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
-                <p>Discount (30.00%):</p>
-                <span>Rs. 47.70</span>
-            </div>
-            <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
-                <p>Total Amount :</p>
-                <span class="font-bold text-black">Rs. 312.70</span>
-            </div>
-        </div>
+            <?php
+            if (isset($_GET['id'])) {
+                $kids_id = $_GET['id'];
+                $query = "  SELECT * FROM kids  JOIN session ON kids.id = session.kid_id where session.id='$kids_id'";
+                $result = mysqli_query($connect, $query);
+            }
 
-        <!-- Buttons -->
-        <div class="mt-5 flex gap-4">
-            <button onclick="window.print()"
-                class="bg-red-500 text-white px-6 py-2 rounded shadow-md hover:bg-red-600 transition">
-                Print Receipt
-            </button>
-            <button onclick="window.history.back()"
-                class="bg-blue-500 text-white px-6 py-2 rounded shadow-md hover:bg-blue-600 transition">
-                Go Back
-            </button>
+
+            while ($row = $result->fetch_array()):
+            ?>
+
+                <div class="flex flex-col gap-2 p-4">
+                    <p class="text-black font-semibold text-lg">Kid's Name: <?= $row['kid_name']; ?></p>
+                    <span class="text-black font-semibold text-lg">Assigned Hours: <?= $row['duration']; ?> Hours</span>
+                    <p class="text-black font-semibold text-lg">Check-In-Time: <?= $row['check_in_time']; ?></p>
+                    <p class="text-black font-semibold text-lg">Receipt Details:</p>
+                </div>
+                <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
+                    <p>Base Amount (Excl. GST):</p>
+                    <span>Rs. <?= $row['total_cost']; ?></span>
+                </div>
+                <?php if ($row['include_gst'] == 1): ?>
+                    <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
+                        <p>CGST (9%):</p>
+                        <span>Rs. 26</span>
+                    </div>
+                    <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
+                        <p>SGST (9%):</p>
+                        <span>Rs.26</span>
+                    </div>
+                <?php endif; ?>
+
+                <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
+                    <p>Discount (30.00%):</p>
+                    <span>Rs. 65</span>
+                </div>
+                <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
+                    <p>Total Amount :</p>
+                    <span class="font-bold text-black">Rs.165</span>
+                </div>
         </div>
+    <?php endwhile; ?>
+
+    <!-- Buttons -->
+    <div class="mt-5 flex gap-4">
+        <button onclick="window.print()"
+            class="bg-red-500 text-white px-6 py-2 rounded shadow-md hover:bg-red-600 transition">
+            Print Receipt
+        </button>
+        <button onclick="window.history.back()"
+            class="bg-blue-500 text-white px-6 py-2 rounded shadow-md hover:bg-blue-600 transition">
+            Go Back
+        </button>
+    </div>
 
     </div>
 </body>

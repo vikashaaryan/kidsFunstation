@@ -3,25 +3,27 @@ if (!isset($_SESSION['user_id'])) {
     redirect("login.php");
 }
 $calling_kids = $connect->query(
-    "SELECT * FROM kids  JOIN session ON kids.id = session.kid_id"
+    "SELECT * FROM kids  JOIN session ON kids.id = session.kid_id ORDER BY check_in_time DESC"
 );
 $result = mysqli_query($connect, "SELECT * FROM session");
 $count = mysqli_num_rows($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kids Fun Station</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
     <div class="flex">
         <?php include_once "includes/sidebar.php"; ?>
         <div class="w-9/12">
             <div class="m-10 flex justify-between items-center">
-                <h2 class="text-3xl font-semibold">Realtime Session(<?= $count;?>)</h2>
+                <h2 class="text-3xl font-semibold">Realtime Session(<?= $count; ?>)</h2>
                 <div class="flex gap-4">
                     <a href="#" class="block flex items-center gap-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg rounded-lg py-2 px-2 shadow-md">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="h-6 w-6">
@@ -94,7 +96,7 @@ $count = mysqli_num_rows($result);
                                     </svg>
                                     <?= $kid['duration']; ?> hours
                                 </h2>
-                                <a href="reciept.php" class="flex text-gray-600">
+                                <a href="reciept.php?id=<?= $kid['id']; ?>" class="flex text-gray-600">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 ">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                                     </svg>

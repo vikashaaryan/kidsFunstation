@@ -1,3 +1,11 @@
+<?php
+include_once "config/connect.php"; 
+
+$query = "  SELECT * FROM kids  JOIN session ON kids.id = session.kid_id ORDER BY check_in_time DESC";
+$result = mysqli_query($connect, $query);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +24,7 @@
                 <div class="flex justify-between items-center">
                     <h2 class="font-bold text-2xl text-gray-800">CheckOut Session</h2>
                     <div class="flex gap-4">
-                        <form action="" method="">
+                        <form action="" method="GET">
                             <input type="search" name="search" class="py-2.5 px-4 bg-gray-100 rounded border focus:ring-2  focus:outline-none focus:border-blue-400" placeholder="Search Kid's Name">
                             <input type="submit" name="go" value="Search" class="py-2 px-2 text-xl outline-none ring:blue-500 border border-blue-500 border-2 cursor-pointer bg-black text-white font-semibold rounded">
                         </form>
@@ -33,8 +41,8 @@
                             </select>
                         </div>
                     </div>
-
                 </div>
+
                 <div class="shadow-xl w-full p-4 m-5">
                     <table class="w-full border border-black">
                         <thead>
@@ -49,15 +57,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center">
-                                <td class="border border-black py-2 px-4">John Doe</td>
-                                <td class="border border-black py-2 px-4">1234567890</td>
-                                <td class="border border-black py-2 px-4">10:00 AM</td>
-                                <td class="border border-black py-2 px-4">12:00 PM</td>
-                                <td class="border border-black py-2 px-4">2 Hours</td>
-                                <td class="border border-black py-2 px-4">2 Hours</td>
-                                <td class="border border-black py-2 px-4"><button class="bg-blue-500 text-white px-3 py-1 rounded">Print</button></td>
-                            </tr>
+                            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                <tr class="text-center">
+                                    <td class="border border-black py-2 px-4"><?= $row['kid_name']; ?></td>
+                                    <td class="border border-black py-2 px-4"><?= $row['contact']; ?></td>
+                                    <td class="border border-black py-2 px-4"><?= $row['check_in_time']; ?></td>
+                                    <td class="border border-black py-2 px-4"><?= $row['check_out_time']; ?></td>
+                                    <td class="border border-black py-2 px-4"><?= $row['duration']; ?> Hours</td>
+                                    <td class="border border-black py-2 px-4">2  Hours</td>
+                                    <td class="border border-black py-2 px-4">
+                                        <button class="bg-blue-500 text-white px-3 py-1 rounded">Print</button>
+                                    </td>
+                                </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
