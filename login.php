@@ -1,3 +1,6 @@
+<?php
+include_once "config/connect.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,24 +19,45 @@
         <h2 class="text-3xl font-bold text-pink-600 mt-4">Welcome to FunStation</h2>
         <p class="text-gray-600 mb-6">Login to continue</p>
 
-        <form action="#" method="POST" class="space-y-4">
+        <form action="" method="POST" class="space-y-4">
             <div class="text-left">
                 <label class="text-lg font-semibold text-gray-700">Username</label>
-                <input type="text" name="username" placeholder="Enter your username"
+                <input type="text" name="username" required placeholder="Enter your username"
                     class="w-full py-3 px-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-pink-300 outline-none">
             </div>
 
             <div class="text-left">
                 <label class="text-lg font-semibold text-gray-700">Password</label>
-                <input type="password" name="password" placeholder="Enter your password"
+                <input type="password" name="password" required placeholder="Enter your password"
                     class="w-full py-3 px-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-yellow-300 outline-none">
             </div>
 
-            <button type="submit"
+            <button type="submit" name="login"
                 class="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold text-lg py-3 rounded-lg shadow-md transition">
                 Login
             </button>
         </form>
+
+        <?php
+        if (isset($_POST['login'])) {
+            $user_name = $_POST['username'];
+            $password = md5($_POST['password']); 
+
+            $query = $connect->query("SELECT * FROM admin WHERE user_name='$user_name'");
+            $user = $query->fetch_assoc();
+
+            if ($user) {
+                if ($user['password'] === $password) { // Check password
+                    $_SESSION['user_id'] = $user['id']; // Store user in session
+                   redirect("index.php");
+                } else {
+                    msg('Invalid password!');
+                }
+            } else {
+                msg('User not found!');
+            }
+        }
+        ?>
     </div>
 </body>
 

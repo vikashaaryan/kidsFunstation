@@ -1,3 +1,6 @@
+<?php
+include_once "config/connect.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +18,7 @@
             <div class="p-10 flex flex-col justify-center items-center h-[90vh] ">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 underline">Kids' Details</h2>
                 <div class="bg-white shadow-2xl border border-gray-200 max-w-3xl w-full p-8 rounded-lg">
-                    <form action="" method="">
+                    <form action="" method="post">
                         <div class="flex flex-col">
                             <label for="kids_name" class="text-lg font-medium text-gray-700 mb-1">Kid's Name:</label>
                             <input type="text" name="kids_name" class="py-3 px-4 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
@@ -30,9 +33,23 @@
                         </div>
 
                         <div class="mt-6 flex justify-center">
-                            <input type="submit" value=" Submit" class="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white font-semibold text-lg px-6 py-3 rounded-lg shadow-md transition-all duration-300  w-full">
+                            <input type="submit" name="submit" value=" Submit" class="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white font-semibold text-lg px-6 py-3 rounded-lg shadow-md transition-all duration-300  w-full">
                         </div>
                     </form>
+                     <?php 
+                     if(isset($_POST['submit'])){
+                        $kids_name = $_POST['kids_name'];
+                        $contact = $_POST['contact'];
+                        $age = $_POST['age'];
+
+                        $query = $connect->query("insert into kids(kid_name,contact,age) value('$kids_name','$contact','$age')");
+
+                        if($query){
+                            redirect("add_session.php");
+                        }
+                     }
+                     
+                     ?>
                 </div>
             </div>
         </div>
