@@ -1,9 +1,5 @@
 <?php
-include_once "config/connect.php"; 
-
-$query = "  SELECT * FROM kids  JOIN session ON kids.id = session.kid_id ORDER BY check_in_time DESC";
-$result = mysqli_query($connect, $query);
-
+include_once "config/connect.php";
 ?>
 
 <!DOCTYPE html>
@@ -57,19 +53,30 @@ $result = mysqli_query($connect, $query);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                            <?php
+                            if (isset($_GET['go'])) {
+                                $search = mysqli_real_escape_string($connect, $_GET['search']);
+                                $query = "SELECT * FROM kids JOIN session ON kids.id = session.kid_id WHERE kid_name LIKE '%$search%'";
+                                $result = mysqli_query($connect, $query);
+                            } else {
+                                $query = "SELECT * FROM kids JOIN session ON kids.id = session.kid_id ORDER BY check_in_time DESC";
+                                $result = mysqli_query($connect, $query);
+                            }
+
+                            while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr class="text-center">
                                     <td class="border border-black py-2 px-4"><?= $row['kid_name']; ?></td>
                                     <td class="border border-black py-2 px-4"><?= $row['contact']; ?></td>
                                     <td class="border border-black py-2 px-4"><?= $row['check_in_time']; ?></td>
                                     <td class="border border-black py-2 px-4"><?= $row['check_out_time']; ?></td>
                                     <td class="border border-black py-2 px-4"><?= $row['duration']; ?> Hours</td>
-                                    <td class="border border-black py-2 px-4">2  Hours</td>
+                                    <td class="border border-black py-2 px-4">2 Hours</td>
                                     <td class="border border-black py-2 px-4">
                                         <button class="bg-blue-500 text-white px-3 py-1 rounded">Print</button>
                                     </td>
                                 </tr>
                             <?php } ?>
+
                         </tbody>
                     </table>
                 </div>

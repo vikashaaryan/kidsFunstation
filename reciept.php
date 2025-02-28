@@ -1,4 +1,6 @@
 <?php include_once "config/connect.php";
+$calling_detail = $connect->query("select * from settings");
+$data = $calling_detail->fetch_array();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,13 +23,13 @@
                 </div>
                 <div class="mt-4 flex flex-col gap-1">
                     <h2 class="text-gray-600 text-base font-semibold">
-                        Panorma Rameshwaram 1st Floor, Shop No 209 Near Tanishq Showroom, Line Bazar <br>Purnea (Bihar)
+                        <?= $data['address']; ?>
                     </h2>
-                    <p class="text-gray-600 text-base font-semibold">GST No: 10NCPA1183R1Z6</p>
+                    <p class="text-gray-600 text-base font-semibold">GST No: <?= $data['gst']; ?></p>
                 </div>
                 <div class="mt-4">
-                    <h2 class="text-base text-gray-600 font-semibold">Phone: 8755547565</h2>
-                    <span class="text-base text-gray-600 font-semibold">kidzfunstation@gmail.com</span>
+                    <h2 class="text-base text-gray-600 font-semibold">Phone: <?= $data['contact']; ?></h2>
+                    <span class="text-base text-gray-600 font-semibold"><?= $data['email']; ?></span>
                 </div>
             </div>
             <?php
@@ -62,13 +64,13 @@
                     </div>
                 <?php endif; ?>
 
-                <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
+                <!-- <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
                     <p>Discount (30.00%):</p>
                     <span>Rs. 65</span>
-                </div>
+                </div> -->
                 <div class="pl-4 flex justify-between items-center text-base font-semibold text-gray-600 p-2">
                     <p>Total Amount :</p>
-                    <span class="font-bold text-black">Rs.165</span>
+                    <span class="font-bold text-black">Rs. <?= $row['total_cost']; ?></span>
                 </div>
         </div>
     <?php endwhile; ?>
