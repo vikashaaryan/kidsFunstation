@@ -35,7 +35,7 @@ $data = $calling_detail->fetch_array();
             <?php
             if (isset($_GET['id'])) {
                 $kids_id = $_GET['id'];
-                $query = "  SELECT * FROM kids  JOIN session ON kids.id = session.kid_id where session.id='$kids_id'";
+                $query = "SELECT * FROM kids  JOIN session ON kids.id = session.kid_id where session.id='$kids_id'";
                 $result = mysqli_query($connect, $query);
             }
 

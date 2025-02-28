@@ -25,7 +25,7 @@ $count = mysqli_num_rows($result);
             <div class="m-10 flex justify-between items-center">
                 <h2 class="text-3xl font-semibold">Realtime Session(<?= $count; ?>)</h2>
                 <div class="flex gap-4">
-                    <a href="#" class="block flex items-center gap-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg rounded-lg py-2 px-2 shadow-md">
+                    <a href="add_session.php" class="block flex items-center gap-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg rounded-lg py-2 px-2 shadow-md">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="h-6 w-6">
                             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z" />
                         </svg>
